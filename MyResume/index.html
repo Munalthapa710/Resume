@@ -38,6 +38,48 @@
     <!-- Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet" />
 
+    <!--EmailJS
+    =========================================================-->
+    <script>
+      document.getElementById("contact-form").addEventListener("submit", function (e) {
+        e.preventDefault(); // Prevent the default form submission
+    
+        const serviceID = "service_6qwhgkr"; // Replace with your Email.js service ID
+        const templateID = "template_q5jtmvf"; // Replace with your Email.js template ID
+    
+        // Collect form data
+        const form = e.target;
+        const formData = {
+          name: form.name.value,
+          email: form.email.value,
+          subject: form.subject.value,
+          message: form.message.value,
+        };
+    
+        // Show the loading indicator
+        document.querySelector(".loading").style.display = "block";
+        document.querySelector(".error-message").style.display = "none";
+        document.querySelector(".sent-message").style.display = "none";
+    
+        // Send the email using Email.js
+        emailjs
+          .send(serviceID, templateID, formData)
+          .then(() => {
+            document.querySelector(".loading").style.display = "none";
+            document.querySelector(".sent-message").style.display = "block";
+            form.reset(); // Reset the form fields
+          })
+          .catch((error) => {
+            console.error("Failed to send email:", error);
+            document.querySelector(".loading").style.display = "none";
+            document.querySelector(".error-message").textContent =
+              "An error occurred. Please try again later.";
+            document.querySelector(".error-message").style.display = "block";
+          });
+      });
+    </script>
+    
+
     <!-- =======================================================
   * Template Name: MyResume
   * Template URL: https://bootstrapmade.com/free-html-bootstrap-template-my-resume/
@@ -179,7 +221,7 @@
                     <li>
                       <i class="bi bi-chevron-right"></i>
                       <strong>Email:</strong>
-                      <span>munalmthapa710@example.com</span>
+                      <span>thapa710@gmail.com</span>
                     </li>
                     <li>
                       <i class="bi bi-chevron-right"></i>
@@ -716,7 +758,8 @@
 
             <div class="col-lg-8">
               <form
-                action="forms/contact.php"
+                
+                id="contact-form"
                 method="post"
                 class="php-email-form"
                 data-aos="fade-up"
