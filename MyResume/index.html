@@ -40,44 +40,41 @@
 
     <!--EmailJS
     =========================================================-->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
-      document.getElementById("contact-form").addEventListener("submit", function (e) {
-        e.preventDefault(); // Prevent the default form submission
+       document.addEventListener("DOMContentLoaded", function () {
+          // Initialize EmailJS
+          emailjs.init("2Aa4h-Hp6C82KBjZi"); // Replace with your actual public key
     
-        const serviceID = "service_6qwhgkr"; // Replace with your Email.js service ID
-        const templateID = "template_q5jtmvf"; // Replace with your Email.js template ID
+          // Add form submission event listener
+          document.getElementById("contact-form").addEventListener("submit", function (event) {
+             event.preventDefault();
     
-        // Collect form data
-        const form = e.target;
-        const formData = {
-          name: form.name.value,
-          email: form.email.value,
-          subject: form.subject.value,
-          message: form.message.value,
-        };
+             const formData = {
+                to_name: "Munal Thapa",
+                from_name: document.getElementById("contactName").value,
+                subject: document.getElementById("contactSubject").value,
+                message: document.getElementById("contactMessage").value,
+                from_email: document.getElementById("contactEmail").value
+             };
     
-        // Show the loading indicator
-        document.querySelector(".loading").style.display = "block";
-        document.querySelector(".error-message").style.display = "none";
-        document.querySelector(".sent-message").style.display = "none";
-    
-        // Send the email using Email.js
-        emailjs
-          .send(serviceID, templateID, formData)
-          .then(() => {
-            document.querySelector(".loading").style.display = "none";
-            document.querySelector(".sent-message").style.display = "block";
-            form.reset(); // Reset the form fields
-          })
-          .catch((error) => {
-            console.error("Failed to send email:", error);
-            document.querySelector(".loading").style.display = "none";
-            document.querySelector(".error-message").textContent =
-              "An error occurred. Please try again later.";
-            document.querySelector(".error-message").style.display = "block";
+             // Send email
+             emailjs.send("service_6qwhgkr", "template_q5jtmvf", formData)
+                .then((response) => {
+                   console.log("SUCCESS!", response.status, response.text);
+                   alert("Message sent successfully!");
+                   document.getElementById("contact-form").reset();
+                })
+                .catch((error) => {
+                   console.error("FAILED...", error);
+                   document.getElementById("error-message").textContent =
+                      "Failed to send the message. Please try again later.";
+                   document.getElementById("error-message").style.display = "block";
+                });
           });
-      });
+       });
     </script>
+    
     
 
     <!-- =======================================================
@@ -760,8 +757,7 @@
               <form
                 
                 id="contact-form"
-                method="post"
-                class="php-email-form"
+                
                 data-aos="fade-up"
                 data-aos-delay="200"
               >
@@ -770,6 +766,7 @@
                     <input
                       type="text"
                       name="name"
+                      id="contactName"
                       class="form-control"
                       placeholder="Your Name"
                       required=""
@@ -781,6 +778,7 @@
                       type="email"
                       class="form-control"
                       name="email"
+                      id="contactEmail"
                       placeholder="Your Email"
                       required=""
                     />
@@ -791,6 +789,7 @@
                       type="text"
                       class="form-control"
                       name="subject"
+                      id="contactSubject"
                       placeholder="Subject"
                       required=""
                     />
@@ -800,20 +799,21 @@
                     <textarea
                       class="form-control"
                       name="message"
+                      id="contactMessage"
                       rows="6"
                       placeholder="Message"
                       required=""
                     ></textarea>
                   </div>
 
-                  <div class="col-md-12 text-center">
+                  <!-- <div class="col-md-12 text-center">
                     <div class="loading">Loading</div>
                     <div class="error-message"></div>
                     <div class="sent-message">
                       Your message has been sent. Thank you!
-                    </div>
-
-                    <button type="submit">Send Message</button>
+                    </div> -->
+                     
+                    <input type="submit" id="submit">
                   </div>
                 </div>
               </form>
